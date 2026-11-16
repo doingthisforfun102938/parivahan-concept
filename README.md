@@ -5,8 +5,6 @@
 ## What's inside
 - `Website-Concept.html` — the whole concept in one file: no server, no tracking, no external code. **To view it, just double-click it**; it works offline in any browser.
 - `REPORT.md` — the audit: problems, fixes, evidence, and how the official team could use this.
-- `before/` — screenshots of the current site (16 Nov 2026).
-- `screenshots/` — phone-size previews of the concept in English and Hindi.
 
 ## Journeys covered (English + हिन्दी)
 1. Renew driving licence: quick eligibility check (medical certificate? Aadhaar?), then details, review and tracking
