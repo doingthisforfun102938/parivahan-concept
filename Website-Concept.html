@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parivahan — Citizen Concept Redesign (Unofficial)</title>
+<meta name="description" content="An unofficial, citizen-made concept redesign of India's Parivahan transport services website. Not a government website.">
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  --edge:#7d8796; --blue:#1a4fa0; --blue-dark:#123a77; --blue-tint:#e8eef8;
+  --ink:#1b1f24; --muted:#555d68; --line:#d8dde4; --bg:#f6f7f9; --card:#fff;
+  --green:#137a3e; --green-tint:#e6f4ec; --amber-tint:#fff4dc; --red:#b42318; --red-tint:#fdecea;
+  --radius:12px; --focus:0 0 0 3px #ffbf47;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;font-family:"Noto Sans","Noto Sans Devanagari","Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,label.opt:focus-within,[tabindex="-1"]:focus-visible{outline:3px solid #0b0c0c;outline-offset:2px;box-shadow:0 0 0 7px #ffbf47}
+h1:focus,h1[tabindex]:focus{outline:none;box-shadow:none}
+svg.i{width:24px;height:24px;stroke:var(--blue-dark);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+.narrow{max-width:680px}
+.sr{position:absolute;left:-9999px}
+
+/* concept banner — sticky, cannot be dismissed */
+.concept{position:sticky;top:0;z-index:20;background:#2b2b2b;color:#fff;font-size:.875rem;padding:4px 0;border-bottom:3px solid #ffd166}
+.concept .wrap{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.concept b{color:#ffd166}
+.concept .long{display:none}
+@media(min-width:760px){.concept .long{display:inline}}
+.concept button{background:transparent;border:1px solid #fff8;color:#fff;border-radius:6px;padding:4px 10px;font-size:.875rem;min-height:40px;white-space:nowrap;flex:none}
+
+header.site{background:var(--blue);color:#fff}
+header.site .wrap{display:flex;align-items:center;gap:8px;min-height:60px;padding-top:6px;padding-bottom:6px}
+.brand{display:flex;flex-direction:column;line-height:1.15;color:#fff;text-decoration:none;margin-right:auto;min-height:44px;justify-content:center}
+.brand strong{font-size:1.15rem}
+.brand span{font-size:.875rem;opacity:.9}
+.brand .long{display:none}
+@media(min-width:760px){.brand .long{display:inline}}
+.chip{display:inline-flex;align-items:center;gap:4px;background:#ffffff1f;color:#fff;border:1px solid #ffffff40;border-radius:999px;padding:0 10px;font-size:.875rem;min-height:44px;position:relative}
+.chip select{background:transparent;color:#fff;border:0;font:inherit;min-height:44px;max-width:120px;cursor:pointer}
+.chip select option{color:#000}
+.signin{background:#fff;color:var(--blue);border:0;border-radius:8px;padding:0 12px;font-weight:600;min-height:44px;display:inline-flex;align-items:center;text-decoration:none}
+@media(max-width:420px){.signin .t{display:none}.signin{padding:0 10px}.chip select{max-width:none}.chip{padding:0 8px}header.site .wrap{gap:6px}}
+
+.trust{background:var(--green-tint);color:var(--green);font-size:.875rem;padding:6px 0;border-bottom:1px solid #cfe6d8}
+.trust .wrap{display:flex;gap:8px;align-items:flex-start}
+
+.hero{background:linear-gradient(180deg,var(--blue) 0,var(--blue) 62%,var(--bg) 62%);padding:16px 0 4px}
+.hero h1{color:#fff;margin:0 0 12px;font-size:1.45rem;line-height:1.25}
+@media(min-width:760px){.hero h1{font-size:1.6rem}}
+.search{display:flex;background:#fff;border-radius:var(--radius);box-shadow:0 4px 16px #0002;position:relative}
+.search input{flex:1;border:0;padding:16px;font-size:1rem;min-width:0;border-radius:var(--radius) 0 0 var(--radius)}
+.search button{border:0;background:var(--blue-dark);color:#fff;padding:0 18px;font-weight:600;border-radius:0 var(--radius) var(--radius) 0}
+.suggest{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:0 0 var(--radius) var(--radius);display:none;z-index:5}
+.suggest a{display:block;padding:12px 16px;text-decoration:none;color:var(--ink);border-top:1px solid var(--line)}
+.suggest a:hover{background:var(--blue-tint)}
+
+h1.page{margin:4px 0 0;font-size:1.6rem;line-height:1.25}
+h2{font-size:1.2rem;margin:28px 0 12px}
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(min-width:760px){.tasks{grid-template-columns:repeat(3,1fr)}}
+.task{display:flex;flex-direction:column;gap:4px;background:var(--card);border:1px solid var(--edge);border-radius:var(--radius);padding:14px;text-decoration:none;color:var(--ink);min-height:104px;transition:border-color .15s,box-shadow .15s}
+.task:hover{border-color:var(--blue);box-shadow:0 2px 10px #1a4fa01f}
+.ic{width:40px;height:40px;border-radius:10px;background:var(--blue-tint);display:grid;place-items:center}
+.task strong{font-size:1rem;line-height:1.3}
+.task small{color:var(--muted);font-size:.875rem}
+
+.track{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:16px}
+.track .f{flex:1 1 220px}
+
+.notice{display:flex;gap:12px;align-items:flex-start;background:var(--amber-tint);border:1px solid #f0d9a8;color:#3d2b00;border-radius:var(--radius);padding:12px 14px;margin-top:16px}
+.notice .x{margin-left:auto;background:transparent;border:0;color:#3d2b00;font-size:1.4rem;line-height:1;min-width:44px;min-height:44px;margin:-10px -8px -10px auto}
+
+.cats{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:760px){.cats{grid-template-columns:repeat(3,1fr)}}
+.cat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.cat h3{margin:0 0 8px;font-size:1rem}
+.cat ul{margin:0;padding:0;list-style:none}
+.cat li a{display:flex;align-items:center;min-height:44px;padding:6px 0;border-top:1px solid #eef0f3;text-decoration:none}
+.cat li:first-child a{border-top:0}
+.status a{display:inline-flex;align-items:center;min-height:44px}
+.status{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--green);margin-top:20px;flex-wrap:wrap}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--green);flex:none}
+.dot.amber{background:#c98a00}
+
+footer{margin-top:40px;background:#1f2a37;color:#cdd5df;font-size:.875rem;padding:24px 0}
+footer a{color:#fff}
+footer .cols{display:flex;gap:8px 24px;flex-wrap:wrap}
+footer .cols a{display:inline-flex;align-items:center;min-height:44px}
+
+.why{display:none;background:#fff8c5;border:1px dashed #b38f00;color:#3d3200;border-radius:8px;padding:8px 10px;font-size:.875rem;margin:10px 0}
+body.show-why .why{display:block}
+
+.view{display:none}
+.view.active{display:block}
+.crumbs{font-size:.95rem;margin:12px 0 4px}
+.crumbs a{display:inline-flex;align-items:center;min-height:44px}
+.err{color:var(--red);font-weight:600;font-size:.95rem;margin:4px 0 6px;display:none}
+.field.invalid input{border:2px solid var(--red)}
+.field.invalid .err{display:block}
+.btn[aria-disabled=true]{background:#8a94a3;cursor:not-allowed}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-top:12px}
+.panel h2:first-child{margin-top:0}
+.steps{display:flex;gap:6px;margin:12px 0 4px;list-style:none;padding:0}
+.steps li{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.steps li.done{background:var(--blue)}
+.steplabel{font-size:.875rem;color:var(--muted);margin:4px 0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:16px 0}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+.fact small{display:block;color:var(--muted);font-size:.875rem}
+.checklist{padding-left:0;list-style:none;margin:0}
+.checklist li{padding:9px 0 9px 30px;position:relative;border-top:1px solid #eef0f3}
+.checklist li:first-child{border-top:0}
+.checklist li:before{content:"✓";position:absolute;left:4px;top:9px;color:var(--green);font-weight:700}
+fieldset{border:0;padding:0;margin:0 0 18px}
+legend{font-weight:600;margin-bottom:8px}
+.opt{display:flex;gap:10px;align-items:center;border:1px solid var(--edge);border-radius:10px;padding:12px;margin-bottom:8px;min-height:48px;cursor:pointer}
+.opt input{width:20px;height:20px;flex:none}
+.opt small{display:block;color:var(--muted)}
+.field{margin-bottom:16px}
+.field label,.lbl{display:block;font-weight:600;margin-bottom:4px}
+.hint{display:block;color:var(--muted);font-size:.875rem;margin-bottom:6px}
+.field input,.track input,.field select{width:100%;padding:12px;border:1px solid #8a94a3;border-radius:8px;font-size:1rem;background:#fff}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:8px;padding:12px 20px;font-weight:600;min-height:48px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn.secondary{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+.result{border-radius:10px;padding:14px;margin-top:10px}
+.result.ok{background:var(--green-tint);color:#0b4a26}
+.result.warn{background:var(--amber-tint);color:#3d2b00}
+.result.bad{background:var(--red-tint);color:#7a1810}
+dl.review{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:0}
+dl.review dt{color:var(--muted)}
+dl.review dd{margin:0;font-weight:600}
+.timeline{list-style:none;padding:0;margin:8px 0 0}
+.timeline li{position:relative;padding:0 0 18px 32px}
+.timeline li:before{content:"";position:absolute;left:6px;top:5px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px var(--line)}
+.timeline li:after{content:"";position:absolute;left:13px;top:24px;bottom:0;width:2px;background:var(--line)}
+.timeline li:last-child:after{display:none}
+.timeline li.done:before{background:var(--green);box-shadow:0 0 0 2px var(--green)}
+.timeline li.now:before{background:var(--blue);box-shadow:0 0 0 2px var(--blue)}
+.timeline small{display:block;color:var(--muted)}
+.demo{font-size:.875rem;color:var(--muted);margin-top:12px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{border:1px solid var(--edge);background:#fff;border-radius:999px;padding:8px 14px;min-height:44px}
+.tabs button[aria-selected="true"]{background:var(--blue);color:#fff;border-color:var(--blue)}
+.list{list-style:none;padding:0;margin:0}
+.item{border:1px solid var(--edge);border-radius:10px;padding:14px;margin-bottom:10px;background:#fff}
+.item .row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.amt{font-size:1.15rem;font-weight:700}
+.tag{display:inline-block;font-size:.875rem;font-weight:600;border-radius:999px;padding:2px 10px;background:var(--blue-tint);color:var(--blue-dark)}
+.tag.red{background:var(--red-tint);color:var(--red)}
+.tag.green{background:var(--green-tint);color:var(--green)}
+.meta{color:var(--muted);font-size:.88rem}
+.card-preview{border-radius:14px;padding:18px;background:linear-gradient(135deg,#eaf0fb,#d5e1f6);border:1px solid #b9c9e6;max-width:420px}
+.card-preview .wm{font-size:.875rem;color:#7a1810;font-weight:700;letter-spacing:.5px}
+.q{border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:12px}
+.svc{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-top:1px solid #eef0f3;align-items:center}
+.svc:first-child{border-top:0}
+.total{display:flex;justify-content:space-between;font-weight:700;font-size:1.1rem;border-top:2px solid var(--line);padding-top:12px;margin-top:6px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-id" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.6-1.5 1.7-2 3-2s2.4.5 3 2M14 10h4M14 13h4"/></symbol>
+<symbol id="i-learn" viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M15 4v4h4M8 12h8M8 16h5"/></symbol>
+<symbol id="i-light" viewBox="0 0 24 24"><rect x="8" y="2.5" width="8" height="19" rx="3"/><circle cx="12" cy="7" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="17" r="1.6"/></symbol>
+<symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 8h14l-3-3M20 16H6l3 3"/></symbol>
+<symbol id="i-track" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></symbol>
+</svg>
+<a href="#main" class="sr">Skip to main content</a>
+
+<div class="concept" role="note">
+  <div class="wrap">
+    <span data-hi="<b>कॉन्सेप्ट — आधिकारिक वेबसाइट नहीं।</b><span class='long'> एक नागरिक द्वारा सुधार सुझाने के लिए बनाया गया। आप जो लिखेंगे, वह कहीं नहीं भेजा जाता।</span>"><b>Concept — not an official website.</b><span class="long"> Made by a citizen to suggest improvements. Nothing you type is sent anywhere.</span></span>
+    <button id="toggleWhy" aria-pressed="false" data-hi="क्या बदला?">What changed?</button>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="#home">
+      <strong data-hi="परिवहन">Parivahan</strong>
+      <span data-hi="<span class='long'>सड़क परिवहन और राजमार्ग मंत्रालय · </span>कॉन्सेप्ट"><span class="long">Ministry of Road Transport &amp; Highways · </span>Concept</span>
+    </a>
+    <label class="chip">
+      <svg class="i" aria-hidden="true" style="stroke:#fff;width:18px;height:18px"><use href="#i-pin"/></svg><span class="sr" data-hi="आपका राज्य">Your state</span>
+      <select id="state" aria-label="Your state">
+        <option value="Maharashtra" data-hi="महाराष्ट्र">Maharashtra</option><option value="Delhi" data-hi="दिल्ली">Delhi</option><option value="Karnataka" data-hi="कर्नाटक">Karnataka</option><option value="Uttar Pradesh" data-hi="उत्तर प्रदेश">Uttar Pradesh</option><option value="Gujarat" data-hi="गुजरात">Gujarat</option><option value="Tamil Nadu" data-hi="तमिलनाडु">Tamil Nadu</option><option value="West Bengal" data-hi="पश्चिम बंगाल">West Bengal</option><option value="Rajasthan" data-hi="राजस्थान">Rajasthan</option>
+      </select>
+    </label>
+    <button class="chip" id="lang" aria-label="हिन्दी में देखें / View in English">हिन्दी</button>
+    <a class="signin" href="#signin" aria-label="Sign in"><svg class="i" style="stroke:currentColor;width:20px;height:20px" aria-hidden="true"><use href="#i-user"/></svg><span class="t" data-hi="&nbsp;साइन इन">&nbsp;Sign in</span></a>
+  </div>
+</header>
+
+<div class="trust">
+  <div class="wrap"><svg class="i" aria-hidden="true" style="stroke:var(--green);width:18px;height:18px;flex:none;margin-top:2px"><use href="#i-lock"/></svg><span data-hi="असली पेज हमेशा <b>.gov.in</b> पर होते हैं। हम SMS/WhatsApp पर भुगतान लिंक नहीं भेजते।">Real pages always end in <b>.gov.in</b>. We never send payment links by SMS or WhatsApp.</span></div>
+</div>
+<div class="wrap"><div class="why" data-hi="क्यों: नकली ई-चालान साइटें पुराने डिज़ाइन की नकल करके लोगों को मिलते-जुलते लिंक से ठगती हैं। हर पेज पर एक साफ़ सुरक्षा पंक्ति लोगों को पता जाँचने में मदद करती है।">Why: fake e-challan sites copy the old design and trick people with lookalike links. A constant, plain-language safety line on every page helps people check the address.</div></div>
+
+<main id="main">
+
+<!-- ================= HOME ================= -->
+<section class="view" id="v-home">
+  <div class="hero">
+    <div class="wrap">
+      <h1 data-hi="आज आपको क्या करना है?">What do you need to do today?</h1>
+      <form class="search" role="search" onsubmit="goSearch();return false">
+        <label for="q" class="sr" data-hi="सेवाएँ खोजें">Search services</label>
+        <input id="q" placeholder="Try ‘renew licence’ or ‘pay fine’" data-hi-ph="जैसे ‘लाइसेंस नवीनीकरण’ या ‘चालान’" autocomplete="off">
+        <button type="submit" data-hi="खोजें">Search</button>
+        <div class="suggest" id="suggest" role="listbox"></div>
+      </form>
+      <div class="why" data-hi="क्यों: पुराना होमपेज QR-कोड पॉपअप और साल भर पुराने बैनरों से खुलता था, और उसमें कोई मुख्य शीर्षक नहीं था। अब सबसे पहले एक सवाल और खोज बॉक्स दिखता है।">Why: the old homepage opened with a QR-code popup and year-old event banners, and had no main heading. Now the first thing you see is a question and a search box.</div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h2 data-hi="सबसे ज़्यादा इस्तेमाल होने वाली सेवाएँ" style="margin-top:20px">Most used services</h2>
+    <div class="tasks">
+      <a class="task" href="#renew"><span class="ic" aria-hidden="true"><svg class="i"><use href="#i-id"/></svg></span><strong data-hi="ड्राइविंग लाइसेंस नवीनीकरण">Renew driving licence</strong><small data-hi="समाप्त होने वाला या समाप्त DL">Expiring or expired DL</small></a>
+      <a class="task" href="#ll"><span class="ic" aria-hidden="true"><svg class="i"><use href="#i-learn"/></svg></span><strong data-hi="लर्नर लाइसेंस बनवाएँ">Get a learner's licence</strong><small data-hi="घर से ऑनलाइन टेस्ट">Online test from home</small></a>
+      <a class="task" href="#fine"><span class="ic" aria-hidden="true"><svg class="i"><use href="#i-light"/></svg></span><strong data-hi="ट्रैफ़िक चालान भरें">Pay a traffic fine</strong><small data-hi="वाहन, DL या चालान नंबर से खोजें">Find by vehicle, DL or challan no.</small></a>
+      <a class="task" href="#transfer"><span class="ic" aria-hidden="true"><svg class="i"><use href="#i-swap"/></svg></span><strong data-hi="वाहन का मालिकाना हक़ बदलें">Transfer vehicle ownership</strong><small data-hi="वाहन खरीदा या बेचा">Bought or sold a vehicle</small></a>
+      <a class="task" href="#track"><span class="ic" aria-hidden="true"><svg class="i"><use href="#i-track"/></svg></span><strong data-hi="आवेदन की स्थिति देखें">Track an application</strong><small data-hi="डिलीवरी तक हर कदम देखें">See every step till delivery</small></a>
+      <a class="task" href="#download"><span class="ic" aria-hidden="true"><svg class="i"><use href="#i-down"/></svg></span><strong data-hi="DL या RC डाउनलोड करें">Download DL or RC</strong><small data-hi="मान्य डिजिटल कॉपी">Valid digital copy</small></a>
+    </div>
+    <div class="why" data-hi="क्यों: पुराना होमपेज अंदरूनी सिस्टम (सारथी, वाहन, ई-चालान, डैशबोर्ड) के हिसाब से बना था। लाइसेंस के चार अलग कार्ड एक ही पेज खोलते थे। अब सबसे आम छह काम सबसे पहले, आसान शब्दों में।">Why: the old homepage was organised by internal systems (Sarathi, Vahan, eChallan, dashboards). Four different licence cards all opened the same page. Now the six most common tasks come first, in plain words.</div>
+
+    <form class="track" onsubmit="location.hash='#track';return false">
+      <div class="f">
+        <label for="appno" class="lbl" data-hi="पहले से आवेदन किया है? स्थिति देखें">Already applied? Track your application</label>
+        <input id="appno" placeholder="Application number, e.g. DEMO-000001" data-hi-ph="आवेदन संख्या, जैसे DEMO-000001">
+      </div>
+      <button class="btn" type="submit" data-hi="देखें">Track</button>
+    </form>
+
+    <div class="notice" id="mobNotice" role="status">
+      <svg class="i" aria-hidden="true" style="stroke:#3d2b00;flex:none"><use href="#i-phone"/></svg>
+      <span data-hi="<b>क्या आपका मोबाइल नंबर आपके लाइसेंस और वाहन से जुड़ा है?</b> OTP उसी पर आते हैं। <a href='#mobile'>ऑनलाइन जाँचें और बदलें</a>।"><b>Is your mobile number linked to your licence and vehicle?</b> OTPs go to it. <a href="#mobile">Check and update it online</a>.</span>
+      <button class="x" aria-label="Dismiss" onclick="dismissNotice()">×</button>
+    </div>
+    <div class="why" data-hi="क्यों: यही सूचना हर सब-साइट पर पूरी स्क्रीन के पॉपअप में आती थी (तीन अलग डिज़ाइन, और फ़ोन पर टूटी हुई)। अब यह एक पंक्ति है जिसे आप हटा सकते हैं।">Why: the same reminder appeared as a full-screen popup on every sub-site (three different designs, and broken on phones). Now it's one line that you can dismiss.</div>
+
+        <h2 data-hi="सभी सेवाएँ">All services</h2>
+    <div class="cats">
+      <div class="cat"><h3 data-hi="ड्राइविंग लाइसेंस">Driving licence</h3><ul>
+        <li><a href="#renew" data-hi="लाइसेंस नवीनीकरण">Renew licence</a></li>
+        <li><a href="#ll" data-hi="लर्नर लाइसेंस">Learner's licence</a></li>
+        <li><a href="#soon" data-hi="डुप्लिकेट लाइसेंस (खोया या खराब)">Duplicate licence (lost or damaged)</a></li>
+        <li><a href="#soon" data-hi="पता या नाम बदलें">Change address or name</a></li>
+        <li><a href="#soon" data-hi="नया वाहन प्रकार जोड़ें (COV)">Add a vehicle type (COV)</a></li>
+        <li><a href="#soon" data-hi="अंतरराष्ट्रीय ड्राइविंग परमिट">International Driving Permit</a></li></ul></div>
+      <div class="cat"><h3 data-hi="वाहन">Vehicle</h3><ul>
+        <li><a href="#transfer" data-hi="मालिकाना हक़ बदलें">Transfer ownership</a></li>
+        <li><a href="#soon" data-hi="डुप्लिकेट RC">Duplicate RC</a></li>
+        <li><a href="#soon" data-hi="RC में पता बदलें">Change address in RC</a></li>
+        <li><a href="#soon" data-hi="लोन हटाएँ (हाइपोथिकेशन)">Remove loan (hypothecation)</a></li>
+        <li><a href="#soon" data-hi="फ़ैंसी नंबर चुनें">Choose a fancy number</a></li>
+        <li><a href="#soon" data-hi="प्रदूषण प्रमाणपत्र (PUC)">Pollution certificate (PUC)</a></li></ul></div>
+      <div class="cat"><h3 data-hi="चालान, टैक्स और परमिट">Fines, tax &amp; permits</h3><ul>
+        <li><a href="#fine" data-hi="ट्रैफ़िक चालान भरें">Pay a traffic fine</a></li>
+        <li><a href="#soon" data-hi="रोड टैक्स भरें">Pay road tax</a></li>
+        <li><a href="#soon" data-hi="नेशनल परमिट">National permit</a></li></ul>
+        <h3 style="margin-top:16px" data-hi="अन्य">Other</h3><ul>
+        <li><a href="#mobile" data-hi="मोबाइल नंबर अपडेट करें">Update mobile number</a></li>
+        <li><a href="#soon" data-hi="डीलर और निर्माताओं के लिए">For dealers &amp; manufacturers</a></li>
+        <li><a href="#soon" data-hi="डेटा और डैशबोर्ड">Data &amp; dashboards</a></li></ul></div>
+    </div>
+    <div class="why" data-hi="क्यों: COV, AEDL, VLTD, Homologation जैसे कठिन शब्द और 25 बार ‘Read More’। अब हर लिंक बताता है कि वह क्या करता है, और व्यापार व डेटा टूल ‘अन्य’ में हैं।">Why: jargon labels (COV, AEDL, VLTD, Homologation) and 25 "Read More" links. Now every link says what it does, and business and data tools are moved to "Other".</div>
+
+    <div class="status"><span class="dot" aria-hidden="true"></span><span data-hi="सभी सेवाएँ सामान्य रूप से चल रही हैं ·">All services running normally ·</span> <a href="#service-status" data-hi="सेवा की स्थिति">Service status</a></div>
+    <div class="why" data-hi="क्यों: सर्वर बंद होने पर नागरिकों और RTO कर्मचारियों को पता नहीं चलता। लाइव स्थिति बताती है कि बाद में कोशिश करें या नहीं।">Why: when servers go down, citizens and RTO staff have no way to know. A live status line tells people whether to try later.</div>
+  </div>
+</section>
+
+<!-- ================= RENEW DL ================= -->
+<section class="view" id="v-renew">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#home" data-hi="होम">Home</a> › <span data-hi="लाइसेंस नवीनीकरण">Renew licence</span></div>
+    <h1 class="page" data-hi="अपना ड्राइविंग लाइसेंस नवीनीकृत करें">Renew your driving licence</h1>
+    <p class="steplabel"><span class="stateName">Maharashtra</span> · <a href="#home" data-hi="राज्य बदलें">change state</a></p>
+    <div class="why" data-hi="क्यों: पुराना रास्ता था — होम → कार्ड → राज्य चुनें → दो पॉपअप बंद करें → दो ‘नवीनीकरण’ लिंक में से चुनें → 18 सेवाओं की सूची पढ़ें → Continue। अब एक ही रास्ता, और राज्य याद रहता है।">Why: the old route was Home → card → choose state → close two popups → choose between two "renew" links → read a list of 18 services → Continue. Now there's one entry, and your state is remembered.</div>
+    <div class="facts">
+      <div class="fact"><small data-hi="ऑनलाइन समय">Time online</small><b data-hi="लगभग 10 मिनट (अनुमान)">About 10 minutes (estimate)</b></div>
+      <div class="fact"><small data-hi="RTO जाना">RTO visit</small><b data-hi="आधार eKYC से ज़रूरी नहीं">Not needed with Aadhaar eKYC</b></div>
+      <div class="fact"><small data-hi="डिलीवरी">Delivery</small><b data-hi="स्पीड पोस्ट से">By Speed Post</b></div>
+      <div class="fact"><small data-hi="शुल्क">Fee</small><b data-hi="भुगतान से पहले दिखेगा">Shown before you pay</b></div>
+    </div>
+    <div class="panel">
+      <h2 data-hi="आपको क्या चाहिए">What you'll need</h2>
+      <ul class="checklist">
+        <li data-hi="आपका ड्राइविंग लाइसेंस नंबर">Your driving licence number</li>
+        <li data-hi="आधार, जिससे आपका मोबाइल नंबर जुड़ा हो">Aadhaar, with your mobile number linked to it</li>
+        <li data-hi="मेडिकल प्रमाणपत्र (फ़ॉर्म 1A) — केवल अगर आपकी उम्र 40 से ज़्यादा है या आप ट्रांसपोर्ट वाहन चलाते हैं। हम अगले कदम में जाँच लेंगे।">Medical certificate (Form 1A), only if you are over 40 or drive a transport vehicle. We'll check this next.</li>
+        <li data-hi="शुल्क के लिए UPI, कार्ड या नेट बैंकिंग">UPI, card or net banking for the fee</li>
+      </ul>
+      <div class="btns"><a class="btn" href="#check" data-hi="शुरू करें">Start</a></div>
+    </div>
+    <div class="why" data-hi="क्यों: मेडिकल प्रमाणपत्र का नियम एक पेज के नीचे ‘Note 2’ में छिपा था। अब लोग शुरू करने से पहले ही देख लेते हैं कि क्या चाहिए।">Why: the medical-certificate rule was hidden as "Note 2" at the bottom of a page. Now people see up front what they need, before they start.</div>
+  </div>
+</section>
+
+<section class="view" id="v-check">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#renew" data-hi="‹ वापस">‹ Back</a></div>
+    <ol class="steps" aria-hidden="true"><li class="done"></li><li></li><li></li><li></li></ol>
+    <p class="steplabel" data-hi="कदम 1 / 4 · त्वरित जाँच">Step 1 of 4 · Quick check</p>
+    <div class="panel">
+      <form id="eligForm" onsubmit="return checkElig()">
+        <fieldset><legend data-hi="क्या आपकी उम्र 40 या उससे ज़्यादा है?">Are you 40 or older?</legend>
+          <label class="opt"><input type="radio" name="age" value="y"> <span data-hi="हाँ">Yes</span></label>
+          <label class="opt"><input type="radio" name="age" value="n" checked> <span data-hi="नहीं">No</span></label></fieldset>
+        <fieldset><legend data-hi="क्या आपका लाइसेंस ट्रांसपोर्ट वाहनों (टैक्सी, ट्रक, बस) के लिए है?">Does your licence cover transport vehicles (taxi, truck, bus)?</legend>
+          <label class="opt"><input type="radio" name="tr" value="y"> <span data-hi="हाँ">Yes</span></label>
+          <label class="opt"><input type="radio" name="tr" value="n" checked> <span data-hi="नहीं">No</span></label></fieldset>
+        <fieldset><legend data-hi="क्या आपका आधार आपके मोबाइल नंबर से जुड़ा है?">Is your Aadhaar linked to your mobile number?</legend>
+          <label class="opt"><input type="radio" name="aad" value="y" checked> <span data-hi="हाँ">Yes</span></label>
+          <label class="opt"><input type="radio" name="aad" value="n"> <span data-hi="नहीं / पता नहीं">No / not sure</span></label></fieldset>
+        <div id="eligResult" aria-live="polite"></div>
+        <div class="btns"><button class="btn secondary" type="submit" id="eligBtn" data-hi="जाँचें">Check</button></div>
+      </form>
+    </div>
+    <div class="why" data-hi="क्यों: पुरानी साइट पर नवीनीकरण के दो रास्ते थे (आधार ‘contactless’ पॉपअप और सामान्य मेन्यू लिंक), बिना किसी समझाइश के। अब तीन सवाल आपको सही रास्ते पर भेज देते हैं।">Why: the old site showed two competing ways to renew (an Aadhaar "contactless" popup and a regular menu link) with no explanation. Three questions now send you down the right path automatically.</div>
+  </div>
+</section>
+
+<section class="view" id="v-details">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#check" data-hi="‹ वापस">‹ Back</a></div>
+    <ol class="steps" aria-hidden="true"><li class="done"></li><li class="done"></li><li></li><li></li></ol>
+    <p class="steplabel" data-hi="कदम 2 / 4 · आपका लाइसेंस">Step 2 of 4 · Your licence</p>
+    <div class="panel">
+      <form onsubmit="return checkDL()">
+        <div class="field">
+          <label for="dl" data-hi="ड्राइविंग लाइसेंस नंबर">Driving licence number</label>
+          <span class="hint" data-hi="किसी भी तरह लिखें — स्पेस या डैश के साथ या बिना। फ़ॉर्मेट: राज्य कोड + RTO नंबर + 11 अंक (जैसे MH12 फिर 11 अंक)।">Type it any way, with or without spaces and dashes. Format: state code + RTO number + 11 digits (e.g. MH12 then 11 digits).</span>
+          <span class="err" id="dlErr" data-hi="यह DL नंबर जैसा नहीं दिखता। इसमें राज्य कोड (जैसे MH12) और 11 अंक होने चाहिए।">This doesn't look like a DL number. It should have a state code (like MH12) and 11 digits.</span>
+          <input id="dl" value="XX00 00000000001" autocomplete="off" aria-describedby="dlErr">
+        </div>
+        <div class="field">
+          <label for="dob" data-hi="जन्म तिथि">Date of birth</label>
+          <input id="dob" type="date" value="1990-04-15">
+        </div>
+        <div class="btns"><button class="btn" type="submit" data-hi="जुड़े मोबाइल पर OTP भेजें">Send OTP to linked mobile</button></div>
+        <p class="demo" data-hi="डेमो डेटा। गलती वाली स्थिति देखने के लिए ‘12345’ लिखकर देखें। असली सेवा में कैप्चा की जगह OTP होगा।">Demo data. Type "12345" to see the error state. In the real service an OTP would replace the distorted-text captcha.</p>
+      </form>
+    </div>
+    <div class="why" data-hi="क्यों: पुराने फ़ॉर्म में फ़ॉर्मेट का उलझाने वाला नोट और मुश्किल कैप्चा था। अब एक साफ़ उदाहरण, कोई भी फ़ॉर्मेट मान्य, और OTP से पहचान।">Why: the old form showed a confusing format note and a hard-to-read captcha. Now there's one clear example, any format is accepted, and an OTP verifies you.</div>
+  </div>
+</section>
+
+<section class="view" id="v-review">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#details" data-hi="‹ वापस">‹ Back</a></div>
+    <ol class="steps" aria-hidden="true"><li class="done"></li><li class="done"></li><li class="done"></li><li></li></ol>
+    <p class="steplabel" data-hi="कदम 3 / 4 · अपनी जानकारी जाँचें">Step 3 of 4 · Check your details</p>
+    <div class="panel">
+      <dl class="review">
+        <dt data-hi="नाम">Name</dt><dd data-hi="ए. कुमार (डेमो)">A. Kumar (demo)</dd>
+        <dt data-hi="लाइसेंस">Licence</dt><dd>XX00 00000000001</dd>
+        <dt data-hi="वैध तिथि">Valid till</dt><dd data-hi="14 जनवरी 2027">14 Jan 2027</dd>
+        <dt data-hi="वाहन प्रकार">Vehicle types</dt><dd data-hi="गियर वाली मोटरसाइकिल, कार">Motorcycle with gear, Car</dd>
+        <dt data-hi="यहाँ भेजें">Deliver to</dt><dd><span data-hi="आधार वाला पता, पुणे ·">Address on Aadhaar, Pune ·</span> <a href="#review" data-hi="बदलें">Change</a></dd>
+        <dt>RTO</dt><dd data-hi="पुणे (MH12)">Pune (MH12)</dd>
+      </dl>
+      <div class="result ok" data-hi="RTO जाने की ज़रूरत नहीं। नया लाइसेंस कार्ड स्पीड पोस्ट से आएगा।">No RTO visit needed. Your new licence card will be sent by Speed Post.</div>
+      <div class="btns"><a class="btn" href="#status" data-hi="शुल्क भरें और जमा करें (डेमो)">Pay fee &amp; submit (demo)</a></div>
+      <p class="demo" data-hi="केवल डेमो। यहाँ कोई भुगतान नहीं होता।">Demo only. No payment happens here.</p>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-status">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#track" data-hi="‹ मेरे आवेदन">‹ My applications</a></div>
+    <h1 class="page"><span data-hi="लाइसेंस नवीनीकरण">Licence renewal</span> · DEMO-000001</h1>
+    <p class="steplabel" data-hi="16 नवंबर 2026 को जमा · पुणे (MH12)">Submitted 16 Nov 2026 · Pune (MH12)</p>
+    <div class="panel">
+      <ol class="timeline">
+        <li class="done"><b data-hi="आवेदन जमा हुआ">Application submitted</b><small data-hi="16 नवंबर 2026, रात 9:42">16 Nov 2026, 9:42 pm</small></li>
+        <li class="done"><b data-hi="शुल्क प्राप्त हुआ">Fee received</b><small><span data-hi="16 नवंबर 2026, रात 9:43 ·">16 Nov 2026, 9:43 pm ·</span> <a href="#status" data-hi="रसीद डाउनलोड करें">Download receipt</a></small></li>
+        <li class="now"><b data-hi="RTO पुणे जाँच कर रहा है">Being checked by RTO Pune</b><small data-hi="आमतौर पर 3–7 कार्य दिवस (उदाहरण)। आगे बढ़ने पर हम SMS भेजेंगे।">Usually 3–7 working days (illustrative). We'll SMS you when it moves.</small></li>
+        <li><b data-hi="लाइसेंस कार्ड छपा">Licence card printed</b></li>
+        <li><b data-hi="स्पीड पोस्ट से भेजा गया">Sent by Speed Post</b><small data-hi="ट्रैकिंग नंबर यहाँ दिखेगा">Tracking number appears here</small></li>
+      </ol>
+      <div class="btns"><a class="btn secondary" href="#download" data-hi="अभी डिजिटल लाइसेंस डाउनलोड करें">Download digital licence now</a></div>
+      <p class="demo" data-hi="डेमो डेटा।">Demo data.</p>
+    </div>
+    <div class="why" data-hi="क्यों: नागरिक शिकायत करते हैं कि आवेदन हफ़्तों तक बिना जानकारी ‘pending’ रहते हैं, जैसे ‘RC Dispatch Pending’। अगला कदम और अनुमानित समय वाली टाइमलाइन बिना फ़ोन किए जवाब देती है।">Why: citizens complain of applications "pending" for weeks with no detail, e.g. "RC Dispatch Pending". A step-by-step timeline with the next action and an expected time answers "where is my licence?" without a phone call.</div>
+  </div>
+</section>
+
+<!-- ================= LEARNER'S LICENCE ================= -->
+<section class="view" id="v-ll">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#home" data-hi="होम">Home</a> › <span data-hi="लर्नर लाइसेंस">Learner's licence</span></div>
+    <h1 class="page" data-hi="लर्नर लाइसेंस बनवाएँ">Get a learner's licence</h1>
+    <div class="result warn outage" style="display:none" data-hi="<b>गुजरात में ऑनलाइन टेस्ट अभी धीमा चल रहा है।</b> आप आवेदन शुरू कर सकते हैं; टेस्ट बाद में दें। <a href='#service-status'>सेवा की स्थिति देखें</a>"><b>The online test is running slowly in Gujarat right now.</b> You can start your application and take the test later. <a href="#service-status">See service status</a></div>
+    <p class="steplabel"><span class="stateName">Maharashtra</span> · <a href="#home" data-hi="राज्य बदलें">change state</a></p>
+    <div class="facts">
+      <div class="fact"><small data-hi="टेस्ट">Test</small><b data-hi="घर से ऑनलाइन">Online, from home</b></div>
+      <div class="fact"><small data-hi="न्यूनतम उम्र">Minimum age</small><b data-hi="16 (50cc तक बिना गियर) · 18 (अन्य)">16 (gearless up to 50cc) · 18 (others)</b></div>
+      <div class="fact"><small data-hi="शुल्क">Fee</small><b data-hi="भुगतान से पहले दिखेगा">Shown before you pay</b></div>
+    </div>
+    <div class="panel">
+      <h2 data-hi="आपको क्या चाहिए">What you'll need</h2>
+      <ul class="checklist">
+        <li data-hi="आधार, जिससे आपका मोबाइल नंबर जुड़ा हो">Aadhaar, with your mobile number linked to it</li>
+        <li data-hi="कैमरा वाला फ़ोन या कंप्यूटर (ऑनलाइन टेस्ट के लिए)">A phone or computer with a camera (for the online test)</li>
+        <li data-hi="सड़क संकेत और नियम — हम पहले अभ्यास कराएँगे">Road signs and rules — we'll let you practise first</li>
+      </ul>
+      <div class="btns"><a class="btn" href="#ll-1" data-hi="शुरू करें">Start</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-ll-1">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#ll" data-hi="‹ वापस">‹ Back</a></div>
+    <ol class="steps" aria-hidden="true"><li class="done"></li><li></li><li></li></ol>
+    <p class="steplabel" data-hi="कदम 1 / 3 · आप क्या चलाना चाहते हैं?">Step 1 of 3 · What do you want to drive?</p>
+    <div class="panel">
+      <form onsubmit="location.hash='#ll-2';return false">
+        <fieldset><legend data-hi="सभी लागू विकल्प चुनें">Choose all that apply</legend>
+          <label class="opt"><input type="checkbox" checked> <span><span data-hi="स्कूटर / बिना गियर वाली बाइक">Scooter / gearless bike</span><small>MCWOG</small></span></label>
+          <label class="opt"><input type="checkbox"> <span><span data-hi="गियर वाली मोटरसाइकिल">Motorcycle with gears</span><small>MCWG</small></span></label>
+          <label class="opt"><input type="checkbox"> <span><span data-hi="कार / जीप / वैन">Car / jeep / van</span><small>LMV</small></span></label>
+          <label class="opt"><input type="checkbox"> <span><span data-hi="ई-रिक्शा">E-rickshaw</span><small>e-Rickshaw</small></span></label>
+        </fieldset>
+        <div class="btns"><button class="btn" type="submit" data-hi="आगे बढ़ें">Continue</button></div>
+      </form>
+    </div>
+    <div class="why" data-hi="क्यों: पुरानी साइट केवल कोड (MCWG, LMV, COV) दिखाती है। अब आसान नाम पहले, कोड छोटे अक्षरों में।">Why: the old site shows only codes (MCWG, LMV, COV). Now the plain name comes first, with the code in small print.</div>
+  </div>
+</section>
+
+<section class="view" id="v-ll-2">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#ll-1" data-hi="‹ वापस">‹ Back</a></div>
+    <ol class="steps" aria-hidden="true"><li class="done"></li><li class="done"></li><li></li></ol>
+    <p class="steplabel" data-hi="कदम 2 / 3 · अभ्यास करें">Step 2 of 3 · Practise</p>
+    <div class="panel">
+      <h2 data-hi="अभ्यास प्रश्न">Practice question</h2>
+      <div class="q">
+        <p style="margin-top:0"><b data-hi="लाल ट्रैफ़िक लाइट पर आपको क्या करना चाहिए?">At a red traffic light, what should you do?</b></p>
+        <label class="opt"><input type="radio" name="pq" value="a"> <span data-hi="धीरे करें और निकल जाएँ">Slow down and go through</span></label>
+        <label class="opt"><input type="radio" name="pq" value="b"> <span data-hi="स्टॉप लाइन से पहले रुकें">Stop before the stop line</span></label>
+        <label class="opt"><input type="radio" name="pq" value="c"> <span data-hi="हॉर्न बजाएँ और चलते रहें">Sound the horn and continue</span></label>
+        <div id="pqResult" aria-live="polite"></div>
+      </div>
+      <div class="btns"><button class="btn secondary" type="button" onclick="checkPQ()" data-hi="उत्तर जाँचें">Check answer</button><a class="btn" href="#ll-3" data-hi="मैं टेस्ट के लिए तैयार हूँ">I'm ready for the test</a></div>
+      <p class="demo" data-hi="डेमो — असली सेवा में पूरा अभ्यास सेट और ट्यूटोरियल वीडियो होगा। सेवा-बाधा संदेश देखने के लिए ऊपर राज्य ‘गुजरात’ चुनें।">Demo — the real service would have a full practice set and tutorial video. Choose "Gujarat" as your state at the top to see a service-disruption message.</p>
+    </div>
+    <div class="why" data-hi="क्यों: पुराने मेन्यू में ‘Tutorial for LL Test’ और ‘Online LLTest(STALL)’ अलग-अलग लिंक थे। अब अभ्यास, टेस्ट से ठीक पहले रास्ते में ही है।">Why: the old menu had "Tutorial for LL Test" and "Online LLTest(STALL)" as separate links. Now practice sits right in the path, just before the test.</div>
+  </div>
+</section>
+
+<section class="view" id="v-ll-3">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#ll-2" data-hi="‹ वापस">‹ Back</a></div>
+    <ol class="steps" aria-hidden="true"><li class="done"></li><li class="done"></li><li class="done"></li></ol>
+    <p class="steplabel" data-hi="कदम 3 / 3 · पहचान और टेस्ट">Step 3 of 3 · Verify and take the test</p>
+    <div class="panel">
+      <ul class="checklist">
+        <li data-hi="आधार OTP से पहचान">Verify with Aadhaar OTP</li>
+        <li data-hi="शुल्क भरें">Pay the fee</li>
+        <li data-hi="कैमरा चालू रखकर टेस्ट दें">Take the test with your camera on</li>
+        <li data-hi="पास होते ही लर्नर लाइसेंस डाउनलोड करें">Download your learner's licence as soon as you pass</li>
+      </ul>
+      <div class="result ok" data-hi="पास नहीं हुए? आप दोबारा कोशिश कर सकते हैं — हम बताएँगे कब।">Didn't pass? You can try again — we'll tell you when.</div>
+      <div class="btns"><a class="btn" href="#done-ll" data-hi="टेस्ट शुरू करें (डेमो)">Start test (demo)</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-done-ll">
+  <div class="wrap narrow">
+    <div class="panel" style="margin-top:24px">
+      <div class="result ok" style="margin-top:0"><b data-hi="आप पास हो गए! (डेमो)">You passed! (demo)</b></div>
+      <p data-hi="आपका लर्नर लाइसेंस तैयार है। स्थायी लाइसेंस के ड्राइविंग टेस्ट के लिए आप 30 दिन बाद स्लॉट बुक कर सकते हैं।">Your learner's licence is ready. You can book a driving test for your permanent licence after 30 days.</p>
+      <div class="btns"><a class="btn" href="#download" data-hi="लर्नर लाइसेंस डाउनलोड करें">Download learner's licence</a><a class="btn secondary" href="#home" data-hi="होम पर जाएँ">Go to home</a></div>
+      <p class="demo" data-hi="डेमो — असली नियम और समय-सीमा राज्य के अनुसार अलग हो सकते हैं।">Demo — real rules and waiting periods may vary by state.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAY FINE ================= -->
+<section class="view" id="v-fine">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#home" data-hi="होम">Home</a> › <span data-hi="ट्रैफ़िक चालान">Traffic fine</span></div>
+    <h1 class="page" data-hi="ट्रैफ़िक चालान खोजें और भरें">Find and pay a traffic fine</h1>
+    <div class="result warn"><b data-hi="SMS में आया लिंक? उस पर क्लिक न करें।">Got a link by SMS? Don't click it.</b> <span data-hi="नीचे अपना वाहन नंबर डालकर खुद जाँचें। असली चालान यहाँ दिखेगा।">Check here yourself by entering your vehicle number below. A real challan will show up here.</span></div>
+    <div class="why" data-hi="क्यों: नकली ई-चालान SMS स्कैम आम हैं। पुरानी ई-चालान साइट नागरिकों को अधिकारी लॉगिन फ़ॉर्म के साथ दिखाती थी, और भुगतान पेज के URL में नागरिक को ‘accused’ कहा गया था।">Why: fake e-challan SMS scams are common. The old e-challan site greeted citizens with an officer login form, and the payment page URL called the citizen "accused".</div>
+    <div class="panel">
+      <div class="tabs" role="tablist">
+        <button role="tab" aria-selected="true" onclick="fineTab(this,'veh')" data-hi="वाहन नंबर">Vehicle number</button>
+        <button role="tab" aria-selected="false" onclick="fineTab(this,'dl')" data-hi="DL नंबर">DL number</button>
+        <button role="tab" aria-selected="false" onclick="fineTab(this,'ch')" data-hi="चालान नंबर">Challan number</button>
+      </div>
+      <form onsubmit="return findFines()">
+        <div class="field">
+          <label for="fineIn" id="fineLbl" data-hi="वाहन नंबर">Vehicle number</label>
+          <input id="fineIn" value="XX00 AA 0001" autocomplete="off">
+        </div>
+        <div class="btns"><button class="btn" type="submit" data-hi="चालान खोजें">Find fines</button></div>
+        <div id="fineEmpty" aria-live="polite"></div>
+        <p class="demo" data-hi="डेमो डेटा। ‘कोई चालान नहीं’ स्थिति देखने के लिए XX00 ZZ 0000 डालें। असली सेवा मालिक के मोबाइल पर OTP से पुष्टि करेगी।">Demo data. Enter XX00 ZZ 0000 to see the "no fines" state. The real service would confirm with an OTP to the owner's mobile.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-fine-list">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#fine" data-hi="‹ वापस">‹ Back</a></div>
+    <h1 class="page"><span data-hi="चालान ·">Fines for</span> XX00 AA 0001</h1>
+    <p class="steplabel" data-hi="2 लंबित · 1 भुगतान किया हुआ">2 unpaid · 1 paid</p>
+    <ul class="list" style="margin-top:12px">
+      <li class="item"><label style="display:flex;gap:12px;cursor:pointer"><input type="checkbox" class="fsel" data-amt="500" checked style="width:20px;height:20px;margin-top:4px">
+        <div style="flex:1"><div class="row"><b data-hi="बिना हेलमेट">Riding without a helmet</b><span class="amt">₹500</span></div>
+        <div class="meta" data-hi="3 नवंबर 2026 · कर्वे रोड, पुणे · चालान DEMO-CH-0001">3 Nov 2026 · Karve Road, Pune · Challan DEMO-CH-0001</div>
+        <div style="margin-top:6px"><span class="tag red" data-hi="अवैतनिक">Unpaid</span> <a href="#fine-list" class="meta" data-hi="फ़ोटो सबूत देखें">See photo evidence</a></div></div></label></li>
+      <li class="item"><label style="display:flex;gap:12px;cursor:pointer"><input type="checkbox" class="fsel" data-amt="1000" checked style="width:20px;height:20px;margin-top:4px">
+        <div style="flex:1"><div class="row"><b data-hi="नो-पार्किंग में पार्किंग">Parking in a no-parking zone</b><span class="amt">₹1,000</span></div>
+        <div class="meta" data-hi="21 अक्टूबर 2026 · FC रोड, पुणे · चालान DEMO-CH-0002">21 Oct 2026 · FC Road, Pune · Challan DEMO-CH-0002</div>
+        <div style="margin-top:6px"><span class="tag red" data-hi="अवैतनिक">Unpaid</span> <a href="#fine-list" class="meta" data-hi="फ़ोटो सबूत देखें">See photo evidence</a></div></div></label></li>
+      <li class="item"><div class="row"><b data-hi="सिग्नल तोड़ना">Jumping a red light</b><span class="amt">₹500</span></div>
+        <div class="meta" data-hi="2 मार्च 2026 · चालान DEMO-CH-0000">2 Mar 2026 · Challan DEMO-CH-0000</div>
+        <div style="margin-top:6px"><span class="tag green" data-hi="भुगतान किया">Paid</span> <a href="#fine-list" class="meta" data-hi="रसीद">Receipt</a></div></li>
+    </ul>
+    <div class="panel">
+      <div class="total"><span data-hi="कुल राशि">Total to pay</span><span id="fineTotal">₹1,500</span></div>
+      <div class="btns"><a class="btn" href="#fine-paid" onclick="finesPaid=true" data-hi="चुने गए चालान भरें (डेमो)">Pay selected (demo)</a></div>
+      <p class="meta" style="margin-top:12px"><span data-hi="असहमत हैं?">Disagree with a fine?</span> <a href="#soon" data-hi="इसे चुनौती दें — पता करें कैसे">Contest it — find out how</a></p>
+    </div>
+    <div class="why" data-hi="क्यों: हर चालान पर स्थान, तारीख, सबूत और स्थिति साफ़ दिखती है, कई चालान एक साथ भरे जा सकते हैं, और चुनौती देने का रास्ता भी बताया गया है।">Why: each fine shows place, date, evidence and status. Several fines can be paid at once, and there's a clear way to contest one.</div>
+  </div>
+</section>
+
+<section class="view" id="v-fine-paid">
+  <div class="wrap narrow">
+    <div class="panel" style="margin-top:24px">
+      <div class="result ok" style="margin-top:0"><b data-hi="भुगतान सफल (डेमो)">Payment successful (demo)</b></div>
+      <dl class="review" style="margin-top:12px">
+        <dt data-hi="राशि">Amount</dt><dd id="paidAmt">₹1,500</dd>
+        <dt data-hi="संदर्भ">Reference</dt><dd>PVDEMO-0000-1111</dd>
+        <dt data-hi="तारीख">Date</dt><dd data-hi="16 नवंबर 2026">16 Nov 2026</dd>
+      </dl>
+      <div class="btns"><a class="btn secondary" href="#fine-paid" data-hi="रसीद डाउनलोड करें">Download receipt</a><a class="btn" href="#transfer-check" id="backToTransfer" style="display:none" data-hi="मालिकाना हक़ बदलने पर लौटें">Back to ownership transfer</a><a class="btn" href="#home" data-hi="होम पर जाएँ">Go to home</a></div>
+      <p class="demo" data-hi="कोई असली भुगतान नहीं हुआ।">No real payment was made.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRANSFER OWNERSHIP ================= -->
+<section class="view" id="v-transfer">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#home" data-hi="होम">Home</a> › <span data-hi="मालिकाना हक़ बदलें">Transfer ownership</span></div>
+    <h1 class="page" data-hi="वाहन का मालिकाना हक़ बदलें">Transfer vehicle ownership</h1>
+    <p class="steplabel"><span class="stateName">Maharashtra</span> · <a href="#home" data-hi="राज्य बदलें">change state</a></p>
+    <div class="panel">
+      <form onsubmit="location.hash='#transfer-check';return false">
+        <fieldset><legend data-hi="आप कौन हैं?">Who are you?</legend>
+          <label class="opt"><input type="radio" name="who" checked> <span><span data-hi="मैंने वाहन बेचा है (विक्रेता)">I sold the vehicle (seller)</span><small data-hi="आप आवेदन शुरू करते हैं, खरीदार SMS से पुष्टि करता है">You start the application; the buyer confirms by SMS</small></span></label>
+          <label class="opt"><input type="radio" name="who"> <span><span data-hi="मैंने वाहन खरीदा है (खरीदार)">I bought the vehicle (buyer)</span><small data-hi="विक्रेता का आवेदन पूरा करें या उसे शुरू करने का अनुरोध भेजें">Complete the seller's application, or ask them to start one</small></span></label>
+        </fieldset>
+        <div class="field">
+          <label for="reg" data-hi="वाहन नंबर">Vehicle number</label>
+          <input id="reg" value="XX00 AA 0001" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="chs" data-hi="चेसिस नंबर के आख़िरी 5 अक्षर">Last 5 characters of chassis number</label>
+          <span class="hint" data-hi="RC पर लिखा होता है">Printed on the RC</span>
+          <input id="chs" value="45678" maxlength="5" autocomplete="off">
+        </div>
+        <div class="btns"><button class="btn" type="submit" data-hi="जाँचें कि क्या ट्रांसफ़र हो सकता है">Check if it can be transferred</button></div>
+      </form>
+    </div>
+    <div class="why" data-hi="क्यों: पुरानी साइट पर राज्य दो बार चुनना पड़ता था, फिर RTO की लंबी असंगत सूची। अब सिर्फ़ वाहन नंबर — RTO अपने आप पता चल जाता है।">Why: on the old site you chose your state twice, then picked from a long, inconsistent RTO list. Now you just enter the vehicle number and the RTO is worked out from it.</div>
+  </div>
+</section>
+
+<section class="view" id="v-transfer-check">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#transfer" data-hi="‹ वापस">‹ Back</a></div>
+    <ol class="steps" aria-hidden="true"><li class="done"></li><li></li><li></li></ol>
+    <p class="steplabel" data-hi="कदम 1 / 3 · तैयारी जाँच">Step 1 of 3 · Ready-to-transfer check</p>
+    <div class="panel">
+      <h2 data-hi="मोटरसाइकिल · XX00 AA 0001 (डेमो)">Motorcycle · XX00 AA 0001 (demo)</h2>
+      <div class="svc"><span data-hi="बीमा वैध">Insurance valid</span><span class="tag green" data-hi="ठीक">OK</span></div>
+      <div class="svc"><span data-hi="PUC प्रमाणपत्र वैध">PUC certificate valid</span><span class="tag green" data-hi="ठीक">OK</span></div>
+      <div class="svc"><span data-hi="कोई लोन नहीं (हाइपोथिकेशन)">No loan on vehicle (hypothecation)</span><span class="tag green" data-hi="ठीक">OK</span></div>
+      <div id="trFines"></div>
+      <div class="btns" id="trBtns"></div>
+    </div>
+    <div class="why" data-hi="क्यों: लोग आवेदन जमा करने के बाद ही जान पाते थे कि लोन, चालान या बीमा की वजह से ट्रांसफ़र अटका है। अब शुरुआत में ही एक चेकलिस्ट हर रुकावट दिखा देती है।">Why: people only found out after applying that a loan, unpaid fine or lapsed insurance was blocking the transfer. Now a checklist shows every blocker up front.</div>
+  </div>
+</section>
+
+<section class="view" id="v-transfer-buyer">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#transfer-check" data-hi="‹ वापस">‹ Back</a></div>
+    <ol class="steps" aria-hidden="true"><li class="done"></li><li class="done"></li><li></li></ol>
+    <p class="steplabel" data-hi="कदम 2 / 3 · खरीदार की जानकारी">Step 2 of 3 · Buyer's details</p>
+    <div class="panel">
+      <form onsubmit="location.hash='#transfer-sent';return false">
+        <div class="field">
+          <label for="bname" data-hi="खरीदार का नाम">Buyer's name</label>
+          <input id="bname" value="R. Sharma (demo)">
+        </div>
+        <div class="field">
+          <label for="bmob" data-hi="खरीदार का मोबाइल नंबर">Buyer's mobile number</label>
+          <span class="hint" data-hi="खरीदार को पुष्टि के लिए SMS मिलेगा। उन्हें आधार OTP से पुष्टि करनी होगी।">The buyer gets an SMS to confirm. They verify with their Aadhaar OTP.</span>
+          <input id="bmob" value="98XXXXXX10" inputmode="tel">
+        </div>
+        <ul class="checklist" style="margin-bottom:8px">
+          <li data-hi="फ़ॉर्म 29 और 30 हम आपकी जानकारी से अपने-आप भर देंगे">We'll fill Forms 29 and 30 for you from these details</li>
+          <li data-hi="दोनों पक्ष आधार OTP से हस्ताक्षर करेंगे — कागज़ की ज़रूरत नहीं">Both sides sign with Aadhaar OTP — no paper needed</li>
+        </ul>
+        <div class="btns"><button class="btn" type="submit" data-hi="खरीदार को पुष्टि अनुरोध भेजें (डेमो)">Send to buyer for confirmation (demo)</button></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-transfer-sent">
+  <div class="wrap narrow">
+    <ol class="steps" aria-hidden="true" style="margin-top:20px"><li class="done"></li><li class="done"></li><li class="done"></li></ol>
+    <div class="panel">
+      <div class="result ok" style="margin-top:0"><b data-hi="खरीदार को भेज दिया गया (डेमो)">Sent to the buyer (demo)</b></div>
+      <ol class="timeline" style="margin-top:16px">
+        <li class="done"><b data-hi="विक्रेता ने आवेदन किया">Seller applied</b></li>
+        <li class="now"><b data-hi="खरीदार की पुष्टि का इंतज़ार">Waiting for buyer to confirm</b><small data-hi="खरीदार को SMS भेजा गया · 7 दिन में पुष्टि करनी है (उदाहरण)">SMS sent to buyer · must confirm within 7 days (illustrative)</small></li>
+        <li><b data-hi="शुल्क भुगतान">Fee payment</b></li>
+        <li><b data-hi="RTO स्वीकृति">RTO approval</b></li>
+        <li><b data-hi="नई RC खरीदार को भेजी गई">New RC sent to buyer</b></li>
+      </ol>
+      <div class="btns"><a class="btn" href="#track" data-hi="मेरे आवेदन देखें">See my applications</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRACK ================= -->
+<section class="view" id="v-track">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#home" data-hi="होम">Home</a> › <span data-hi="आवेदन की स्थिति">Track application</span></div>
+    <h1 class="page" data-hi="मेरे आवेदन">My applications</h1>
+    <p class="steplabel" data-hi="आपके मोबाइल नंबर से जुड़े सभी आवेदन — DL और वाहन दोनों, एक ही जगह">All applications linked to your mobile number — licence and vehicle, in one place</p>
+    <ul class="list" style="margin-top:12px">
+      <li class="item"><a href="#status" style="text-decoration:none;color:inherit;display:block">
+        <div class="row"><b data-hi="लाइसेंस नवीनीकरण">Licence renewal</b><span class="tag" data-hi="RTO जाँच रहा है">RTO checking</span></div>
+        <div class="meta" data-hi="DEMO-000001 · 16 नवंबर 2026 को जमा">DEMO-000001 · Submitted 16 Nov 2026</div></a></li>
+      <li class="item"><a href="#transfer-sent" style="text-decoration:none;color:inherit;display:block">
+        <div class="row"><b data-hi="मालिकाना हक़ बदलना · XX00 AA 0001">Ownership transfer · XX00 AA 0001</b><span class="tag" data-hi="खरीदार का इंतज़ार">Waiting for buyer</span></div>
+        <div class="meta" data-hi="DEMO-000002 · 16 नवंबर 2026 को जमा">DEMO-000002 · Submitted 16 Nov 2026</div></a></li>
+      <li class="item"><div class="row"><b data-hi="डुप्लिकेट RC">Duplicate RC</b><span class="tag green" data-hi="डिलीवर हो गया">Delivered</span></div>
+        <div class="meta" data-hi="DEMO-000003 · 2 जून 2026 को डिलीवर · स्पीड पोस्ट EE000000000IN">DEMO-000003 · Delivered 2 Jun 2026 · Speed Post EE000000000IN</div></li>
+    </ul>
+    <div class="panel">
+      <form onsubmit="location.hash='#status';return false">
+        <div class="field" style="margin-bottom:0">
+          <label for="appno2" data-hi="किसी और का आवेदन? आवेदन संख्या डालें">Someone else's application? Enter its number</label>
+          <input id="appno2" placeholder="e.g. DEMO-000001" data-hi-ph="जैसे DEMO-000001">
+        </div>
+        <div class="btns"><button class="btn" type="submit" data-hi="देखें">Track</button></div>
+      </form>
+      <p class="demo" data-hi="डेमो डेटा।">Demo data.</p>
+    </div>
+    <div class="why" data-hi="क्यों: पुरानी साइट पर DL की स्थिति सारथी में और वाहन की स्थिति वाहन पोर्टल पर अलग-अलग देखनी पड़ती थी, हर बार राज्य चुनकर। अब सब एक सूची में।">Why: on the old site, licence status lived in Sarathi and vehicle status in Vahan, each needing you to choose your state. Now everything is in one list.</div>
+  </div>
+</section>
+
+<!-- ================= DOWNLOAD ================= -->
+<section class="view" id="v-download">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#home" data-hi="होम">Home</a> › <span data-hi="DL या RC डाउनलोड">Download DL or RC</span></div>
+    <h1 class="page" data-hi="अपना DL या RC डाउनलोड करें">Download your DL or RC</h1>
+    <div class="panel">
+      <div class="tabs" role="tablist">
+        <button role="tab" aria-selected="true" onclick="dlTab(this,'dl')" data-hi="ड्राइविंग लाइसेंस">Driving licence</button>
+        <button role="tab" aria-selected="false" onclick="dlTab(this,'rc')" data-hi="वाहन RC">Vehicle RC</button>
+      </div>
+      <form onsubmit="document.getElementById('dlPrev').style.display='block';return false">
+        <div class="field">
+          <label for="dlno" id="dlnoLbl" data-hi="ड्राइविंग लाइसेंस नंबर">Driving licence number</label>
+          <input id="dlno" value="XX00 00000000001" autocomplete="off">
+        </div>
+        <div class="btns"><button class="btn" type="submit" data-hi="OTP भेजें और दिखाएँ">Send OTP and show</button></div>
+      </form>
+      <div id="dlPrev" style="display:none;margin-top:18px">
+        <div class="card-preview">
+          <div class="wm" data-hi="डेमो — असली दस्तावेज़ नहीं">DEMO — NOT A REAL DOCUMENT</div>
+          <div style="font-weight:700;margin-top:6px" data-hi="ड्राइविंग लाइसेंस">Driving licence</div>
+          <dl class="review" style="margin-top:8px;font-size:.92rem">
+            <dt data-hi="नाम">Name</dt><dd data-hi="ए. कुमार">A. Kumar</dd>
+            <dt data-hi="नंबर">Number</dt><dd>XX00 00000000001</dd>
+            <dt data-hi="वैध तिथि">Valid till</dt><dd data-hi="14 जनवरी 2027">14 Jan 2027</dd>
+          </dl>
+        </div>
+        <div class="btns"><a class="btn" href="#download" data-hi="PDF डाउनलोड करें">Download PDF</a><a class="btn secondary" href="#download" data-hi="DigiLocker में जोड़ें">Add to DigiLocker</a></div>
+        <p class="meta" data-hi="DigiLocker या mParivahan में रखी डिजिटल कॉपी ट्रैफ़िक जाँच में मान्य है।">A digital copy in DigiLocker or mParivahan is accepted at traffic checks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MOBILE UPDATE ================= -->
+<section class="view" id="v-mobile">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#home" data-hi="होम">Home</a> › <span data-hi="मोबाइल नंबर अपडेट">Update mobile number</span></div>
+    <h1 class="page" data-hi="अपना मोबाइल नंबर जाँचें या बदलें">Check or update your mobile number</h1>
+    <div class="panel">
+      <form onsubmit="document.getElementById('mobRes').innerHTML=T('<div class=&quot;result ok&quot;><b>Linked numbers (demo):</b> Licence → 98XXXXXX10 · XX00 AA 0001 → 98XXXXXX10. <a href=&quot;#mobile&quot;>Change</a></div>','<div class=&quot;result ok&quot;><b>जुड़े नंबर (डेमो):</b> लाइसेंस → 98XXXXXX10 · XX00 AA 0001 → 98XXXXXX10। <a href=&quot;#mobile&quot;>बदलें</a></div>');return false">
+        <div class="field">
+          <label for="mobq" data-hi="DL नंबर या वाहन नंबर">DL number or vehicle number</label>
+          <input id="mobq" value="XX00 AA 0001">
+        </div>
+        <div class="btns"><button class="btn" type="submit" data-hi="जाँचें">Check</button></div>
+        <div id="mobRes" aria-live="polite"></div>
+      </form>
+    </div>
+    <div class="why" data-hi="क्यों: पुराने पॉपअप में DL और वाहन के लिए दो अलग QR कोड और लिंक थे। अब एक ही जगह दोनों।">Why: the old popup gave two separate QR codes and links for licence and vehicle. Now both are in one place.</div>
+  </div>
+</section>
+
+<!-- ================= SIGN IN (placeholder) ================= -->
+<section class="view" id="v-signin">
+  <div class="wrap narrow">
+    <div class="panel" style="margin-top:24px">
+      <h2 data-hi="साइन इन">Sign in</h2>
+      <p data-hi="असली सेवा में आप अपने मोबाइल OTP या DigiLocker / आधार से साइन इन करेंगे — एक ही खाता लाइसेंस, वाहन और चालान सबके लिए।">In the real service you would sign in with a mobile OTP or DigiLocker / Aadhaar — one account for licence, vehicle and fines.</p>
+      <div class="result warn" data-hi="यह कॉन्सेप्ट साइट है — कृपया यहाँ कोई पासवर्ड या असली जानकारी न डालें।">This is a concept site — please don't enter any password or real details here.</div>
+      <div class="btns"><a class="btn" href="#track" data-hi="डेमो खाता देखें">View demo account</a></div>
+    </div>
+    <div class="why" data-hi="क्यों: पुरानी साइट पर सारथी, वाहन और ई-चालान के लिए अलग-अलग लॉगिन हैं।">Why: the old site has separate logins for Sarathi, Vahan and eChallan.</div>
+  </div>
+</section>
+
+<!-- ================= SERVICE STATUS ================= -->
+<section class="view" id="v-service-status">
+  <div class="wrap narrow">
+    <div class="crumbs"><a href="#home" data-hi="होम">Home</a> › <span data-hi="सेवा की स्थिति">Service status</span></div>
+    <h1 class="page" data-hi="सेवा की स्थिति">Service status</h1>
+    <p class="steplabel" data-hi="उदाहरण डेटा · अपडेट: 16 नवंबर 2026, रात 9:30">Example data · Updated 16 Nov 2026, 9:30 pm</p>
+    <div class="panel">
+      <div class="svc"><span data-hi="ड्राइविंग लाइसेंस सेवाएँ">Driving licence services</span><span class="tag green" data-hi="चालू">Running</span></div>
+      <div class="svc"><span data-hi="वाहन सेवाएँ">Vehicle services</span><span class="tag green" data-hi="चालू">Running</span></div>
+      <div class="svc"><span data-hi="चालान भुगतान">Fine payments</span><span class="tag green" data-hi="चालू">Running</span></div>
+      <div class="svc"><span data-hi="लर्नर ऑनलाइन टेस्ट — गुजरात">Learner's online test — Gujarat</span><span class="tag red" data-hi="धीमा">Slow</span></div>
+      <p class="meta" data-hi="किसी सेवा में रुकावट होने पर, हम यहाँ कारण और अनुमानित समय बताएँगे, ताकि आपको RTO जाकर पूछना न पड़े।">If a service is disrupted, we'll show the reason and expected fix time here, so you don't have to go to the RTO to ask.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMING SOON ================= -->
+<section class="view" id="v-soon">
+  <div class="wrap narrow">
+    <div class="panel" style="margin-top:24px">
+      <h2 data-hi="यह सेवा इस कॉन्सेप्ट में शामिल नहीं है">This service isn't in the concept yet</h2>
+      <p data-hi="यह कॉन्सेप्ट सबसे ज़्यादा इस्तेमाल होने वाली छह सेवाएँ दिखाता है। बाकी सेवाएँ भी इसी पैटर्न पर बनेंगी: पहले ‘क्या चाहिए’, फिर कुछ आसान कदम, फिर साफ़ स्थिति।">This concept covers the six most used services. The rest would follow the same pattern: "what you'll need" first, then a few simple steps, then clear status tracking.</p>
+      <div class="btns"><a class="btn" href="#home" data-hi="होम पर जाएँ">Go to home</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p data-hi="<b style='color:#fff'>एक नागरिक का कॉन्सेप्ट डिज़ाइन।</b> सड़क परिवहन और राजमार्ग मंत्रालय (MoRTH) या NIC से संबद्ध नहीं। GIGW 3.0 और UX4G सिद्धांतों पर आधारित। खुले रूप से साझा, ताकि आधिकारिक टीम इसका कोई भी हिस्सा इस्तेमाल कर सके।"><b style="color:#fff">Concept redesign by a citizen.</b> Not affiliated with MoRTH or NIC. Follows the GIGW 3.0 and UX4G principles. Shared openly so the official team can reuse any part of it.</p>
+    <div class="cols"><a href="#soon" data-hi="सहायता">Help</a><a href="#soon" data-hi="सुगम्यता">Accessibility</a><a href="#soon" data-hi="संपर्क">Contact</a><a href="#service-status" data-hi="सेवा की स्थिति">Service status</a></div>
+  </div>
+</footer>
+
+<script>
+let lang='en';
+function T(en,hi){return lang==='hi'?hi:en}
+
+/* routing */
+let finesPaid=false, firstRoute=true;
+function route(){
+  const k=(location.hash||'#home').slice(1);
+  if(k==='main'){document.querySelector('.view.active h1,.view.active h2')?.focus();return;}
+  const el=document.getElementById('v-'+k)||document.getElementById('v-home');
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v===el));
+  if(el.id==='v-transfer-check') renderTransfer();
+  if(el.id==='v-fine-paid') document.getElementById('backToTransfer').style.display=finesPaid?'inline-flex':'none';
+  showOutage();
+  window.scrollTo(0,0);
+  const h=el.querySelector('h1')||el.querySelector('h2');
+  const step=el.querySelector('.steplabel');
+  const name=h?h.textContent.trim():'';
+  document.title=(name?name+(step&&el.querySelector('.steps')?' — '+step.textContent.trim():'')+' · ':'')+T('Parivahan concept (unofficial)','परिवहन कॉन्सेप्ट (अनौपचारिक)');
+  if(h && !firstRoute){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}
+  firstRoute=false;
+}
+addEventListener('hashchange',route);
+
+/* language */
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-hi]').forEach(el=>{
+    if(el.dataset.en===undefined) el.dataset.en=el.innerHTML;
+    el.innerHTML= lang==='hi'?el.dataset.hi:el.dataset.en;
+  });
+  document.querySelectorAll('[data-hi-ph]').forEach(el=>{
+    if(el.dataset.enPh===undefined) el.dataset.enPh=el.placeholder;
+    el.placeholder= lang==='hi'?el.dataset.hiPh:el.dataset.enPh;
+  });
+  const b=document.getElementById('lang'); b.textContent= lang==='hi'?'English':'हिन्दी';
+  const w=document.getElementById('toggleWhy'); if(document.body.classList.contains('show-why')) w.textContent=T('Hide changes','बदलाव छिपाएँ');
+  const r=document.getElementById('eligResult'); if(r.innerHTML) renderElig();
+  updateFineTotal();
+  if(document.querySelector('#v-transfer-check.active')) renderTransfer();
+  const fe=document.getElementById('fineEmpty'); if(fe.innerHTML) fe.innerHTML=emptyFinesHTML();
+  route_title_refresh();
+}
+function route_title_refresh(){const el=document.querySelector('.view.active');if(!el)return;const h=el.querySelector('h1')||el.querySelector('h2');document.title=(h?h.textContent.trim()+' · ':'')+T('Parivahan concept (unofficial)','परिवहन कॉन्सेप्ट (अनौपचारिक)');}
+document.getElementById('lang').onclick=()=>{lang= lang==='hi'?'en':'hi'; try{localStorage.setItem('pv_lang',lang)}catch(e){} applyLang();};
+
+/* why toggle */
+document.getElementById('toggleWhy').onclick=e=>{const on=document.body.classList.toggle('show-why');e.currentTarget.setAttribute('aria-pressed',on);e.currentTarget.textContent=on?T('Hide changes','बदलाव छिपाएँ'):T('What changed?','क्या बदला?');};
+
+/* state memory */
+const stSel=document.getElementById('state');
+function showState(){document.querySelectorAll('.stateName').forEach(s=>s.textContent=stSel.value)}
+stSel.onchange=()=>{try{localStorage.setItem('pv_state',stSel.value)}catch(e){} showState(); showOutage();};
+function showOutage(){document.querySelectorAll('.outage').forEach(o=>o.style.display=stSel.value==='Gujarat'?'block':'none')}
+
+/* notice */
+function dismissNotice(){document.getElementById('mobNotice').remove();try{sessionStorage.setItem('pv_notice','1')}catch(e){}}
+
+/* search */
+const services0=[
+ ['Renew driving licence','ड्राइविंग लाइसेंस नवीनीकरण','#renew','renew licence dl expire नवीनीकरण लाइसेंस'],
+ ["Get a learner's licence",'लर्नर लाइसेंस बनवाएँ','#ll','learner ll test लर्नर'],
+ ['Pay a traffic fine','ट्रैफ़िक चालान भरें','#fine','fine challan echallan penalty चालान जुर्माना'],
+ ['Transfer vehicle ownership','वाहन का मालिकाना हक़ बदलें','#transfer','transfer ownership sell buy rc मालिक ट्रांसफ़र'],
+ ['Track an application','आवेदन की स्थिति देखें','#track','track status application स्थिति आवेदन'],
+ ['Download DL or RC','DL या RC डाउनलोड करें','#download','download digital copy rc dl डाउनलोड'],
+ ['Update mobile number','मोबाइल नंबर अपडेट करें','#mobile','mobile phone number otp मोबाइल']];
+const services=services0.concat([
+ ['Duplicate licence','डुप्लिकेट लाइसेंस','#soon','duplicate lost damaged licence dl डुप्लिकेट खोया'],
+ ['Change address or name in licence','लाइसेंस में पता या नाम बदलें','#soon','address name change पता नाम'],
+ ['International Driving Permit','अंतरराष्ट्रीय ड्राइविंग परमिट','#soon','international idp abroad permit अंतरराष्ट्रीय'],
+ ['Duplicate RC','डुप्लिकेट RC','#soon','duplicate rc registration lost'],
+ ['Change address in RC','RC में पता बदलें','#soon','address rc पता'],
+ ['Remove loan (hypothecation)','लोन हटाएँ (हाइपोथिकेशन)','#soon','loan hypothecation bank noc लोन'],
+ ['Choose a fancy number','फ़ैंसी नंबर चुनें','#soon','fancy vip number फ़ैंसी'],
+ ['Pollution certificate (PUC)','प्रदूषण प्रमाणपत्र (PUC)','#soon','puc pollution प्रदूषण'],
+ ['Pay road tax','रोड टैक्स भरें','#soon','road tax टैक्स'],
+ ['Service status','सेवा की स्थिति','#service-status','status down outage server स्थिति']]);
+const q=document.getElementById('q'),sg=document.getElementById('suggest');
+function matches(t){t=t.toLowerCase().trim();if(!t)return[];return services.filter(s=>(s[0]+' '+s[1]+' '+s[3]).toLowerCase().split(/\s+/).some(w=>w.startsWith(t)||t.split(/\s+/).some(x=>x.length>2&&w.startsWith(x))))}
+q.oninput=()=>{const t=q.value.trim();const m=matches(t);
+  sg.innerHTML=m.length?m.slice(0,6).map(s=>`<a href="${s[2]}">${T(s[0],s[1])}</a>`).join(''):(t.length>2?T(`<a href="#home" onclick="document.querySelector('.cats').scrollIntoView()">No match for “${t.replace(/[<>&"]/g,'')}”. Browse all services</a>`,`<a href="#home" onclick="document.querySelector('.cats').scrollIntoView()">“${t.replace(/[<>&"]/g,'')}” से कुछ नहीं मिला। सभी सेवाएँ देखें</a>`):'');
+  sg.style.display=sg.innerHTML?'block':'none';};
+q.onblur=()=>setTimeout(()=>sg.style.display='none',200);
+function goSearch(){const m=matches(q.value);if(m.length)location.hash=m[0][2];}
+
+/* renewal eligibility */
+function renderElig(){
+  const f=new FormData(document.getElementById('eligForm'));
+  const needMed=f.get('age')==='y'||f.get('tr')==='y', aad=f.get('aad')==='y';
+  let h=needMed
+   ?T('<div class="result warn"><b>You need a medical certificate (Form 1A).</b> A registered doctor can upload it online. <a href="#soon">Find a doctor near you</a>.</div>','<div class="result warn"><b>आपको मेडिकल प्रमाणपत्र (फ़ॉर्म 1A) चाहिए।</b> पंजीकृत डॉक्टर इसे ऑनलाइन अपलोड कर सकते हैं। <a href="#soon">पास के डॉक्टर खोजें</a>।</div>')
+   :T('<div class="result ok"><b>No medical certificate needed.</b></div>','<div class="result ok"><b>मेडिकल प्रमाणपत्र की ज़रूरत नहीं।</b></div>');
+  h+=aad
+   ?T('<div class="result ok"><b>You can renew fully online.</b> We\'ll verify you with Aadhaar, so no RTO visit is needed.</div>','<div class="result ok"><b>आप पूरी तरह ऑनलाइन नवीनीकरण कर सकते हैं।</b> आधार से पहचान होगी, RTO जाने की ज़रूरत नहीं।</div>')
+   :T('<div class="result warn"><b>You can apply online, but may need one RTO visit</b> to verify documents. <a href="#mobile">Link your mobile number first</a> to avoid it.</div>','<div class="result warn"><b>आप ऑनलाइन आवेदन कर सकते हैं, पर दस्तावेज़ जाँच के लिए एक बार RTO जाना पड़ सकता है।</b> इससे बचने के लिए <a href="#mobile">पहले अपना मोबाइल नंबर जोड़ें</a>।</div>');
+  h+=`<div class="btns"><a class="btn" href="#details" id="eligGo">${T('Continue','आगे बढ़ें')}</a></div>`;
+  document.getElementById('eligResult').innerHTML=h;
+}
+function checkElig(){renderElig();document.getElementById('eligGo').focus();return false;}
+document.querySelectorAll('#eligForm input').forEach(i=>i.addEventListener('change',()=>{if(document.getElementById('eligResult').innerHTML)renderElig()}));
+
+/* DL number validation */
+function checkDL(){
+  const v=document.getElementById('dl').value.replace(/[\s\-\/]/g,'').toUpperCase();
+  const ok=/^[A-Z]{2}\d{2}\d{11}$/.test(v);
+  const f=document.getElementById('dl').closest('.field');
+  f.classList.toggle('invalid',!ok);
+  if(!ok){document.getElementById('dl').focus();return false;}
+  location.hash='#review';return false;
+}
+/* fines search */
+function emptyFinesHTML(){return T('<div class="result ok"><b>No unpaid fines for this vehicle.</b> If you got an SMS saying otherwise, it may be a scam — don\'t click its link.</div>','<div class="result ok"><b>इस वाहन पर कोई अवैतनिक चालान नहीं है।</b> अगर SMS में कुछ और लिखा है तो वह धोखा हो सकता है — उसके लिंक पर क्लिक न करें।</div>')}
+function findFines(){
+  const v=document.getElementById('fineIn').value.replace(/\s/g,'').toUpperCase();
+  const box=document.getElementById('fineEmpty');
+  if(v==='XX00ZZ0000'){box.innerHTML=emptyFinesHTML();return false;}
+  box.innerHTML='';location.hash='#fine-list';return false;
+}
+/* transfer readiness */
+function renderTransfer(){
+  const f=document.getElementById('trFines'), b=document.getElementById('trBtns');
+  if(finesPaid){
+    f.innerHTML=`<div class="svc"><span>${T('No unpaid fines','कोई अवैतनिक चालान नहीं')}</span><span class="tag green">${T('OK','ठीक')}</span></div><div class="result ok">${T('Everything is ready. You can continue.','सब तैयार है। आप आगे बढ़ सकते हैं।')}</div>`;
+    b.innerHTML=`<a class="btn" href="#transfer-buyer">${T('Continue','आगे बढ़ें')}</a>`;
+  }else{
+    f.innerHTML=`<div class="svc"><span>${T('Unpaid fines: ₹1,500','अवैतनिक चालान: ₹1,500')}</span><span class="tag red">${T('Fix','ठीक करें')}</span></div><div class="result warn">${T('Pay the unpaid fines first. Everything else is ready.','पहले अवैतनिक चालान भरें। बाकी सब तैयार है।')}</div>`;
+    b.innerHTML=`<a class="btn" href="#fine-list">${T('Pay fines now','अभी चालान भरें')}</a><span class="btn" aria-disabled="true" role="link">${T('Continue','आगे बढ़ें')}</span>`;
+  }
+}
+/* practice question */
+function checkPQ(){
+  const v=(document.querySelector('input[name=pq]:checked')||{}).value;
+  const r=document.getElementById('pqResult');
+  r.innerHTML=!v?T('<div class="result warn">Choose an answer first.</div>','<div class="result warn">पहले एक उत्तर चुनें।</div>')
+   :v==='b'?T('<div class="result ok"><b>Correct.</b> Always stop before the stop line at a red light.</div>','<div class="result ok"><b>सही।</b> लाल बत्ती पर हमेशा स्टॉप लाइन से पहले रुकें।</div>')
+   :T('<div class="result bad"><b>Not quite.</b> At a red light you must stop before the stop line.</div>','<div class="result bad"><b>सही नहीं।</b> लाल बत्ती पर स्टॉप लाइन से पहले रुकना ज़रूरी है।</div>');
+}
+
+/* fines */
+const fineLabels={veh:['Vehicle number','वाहन नंबर','XX00 AA 0001'],dl:['DL number','DL नंबर','XX00 00000000001'],ch:['Challan number','चालान नंबर','DEMO-CH-0001']};
+function fineTab(btn,k){
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b===btn));
+  const l=document.getElementById('fineLbl'); l.dataset.en=fineLabels[k][0]; l.dataset.hi=fineLabels[k][1]; l.innerHTML=T(fineLabels[k][0],fineLabels[k][1]);
+  document.getElementById('fineIn').value=fineLabels[k][2];
+}
+function fmt(n){return '₹'+n.toLocaleString('en-IN')}
+function updateFineTotal(){
+  let t=0; document.querySelectorAll('.fsel').forEach(c=>{if(c.checked)t+=+c.dataset.amt});
+  document.getElementById('fineTotal').textContent=fmt(t); document.getElementById('paidAmt').textContent=fmt(t);
+}
+document.querySelectorAll('.fsel').forEach(c=>c.addEventListener('change',updateFineTotal));
+
+/* download tabs */
+function dlTab(btn,k){
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b===btn));
+  const l=document.getElementById('dlnoLbl');
+  const en=k==='dl'?'Driving licence number':'Vehicle number', hi=k==='dl'?'ड्राइविंग लाइसेंस नंबर':'वाहन नंबर';
+  l.dataset.en=en; l.dataset.hi=hi; l.innerHTML=T(en,hi);
+  document.getElementById('dlno').value=k==='dl'?'XX00 00000000001':'XX00 AA 0001';
+  document.getElementById('dlPrev').style.display='none';
+}
+
+/* init */
+try{const s=localStorage.getItem('pv_state');if(s)stSel.value=s;}catch(e){}
+try{if(sessionStorage.getItem('pv_notice'))document.getElementById('mobNotice').remove();}catch(e){}
+try{if(localStorage.getItem('pv_lang')==='hi')lang='hi';}catch(e){}
+showState(); if(lang==='hi')applyLang(); route();
+</script>
+</body>
+</html>
